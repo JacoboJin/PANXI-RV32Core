@@ -1,6 +1,6 @@
 # Grow-RV32
-This is an experiment for  lab's members, aiming to design an RV32 SoC. In the future, we will continuously add the desired functions to it.
 
+This is an experiment for  lab's members, aiming to design an RV32 SoC. In the future, we will continuously add the desired functions to it.
 
 <!-- PROJECT SHIELDS -->
 
@@ -10,14 +10,12 @@ This is an experiment for  lab's members, aiming to design an RV32 SoC. In the f
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 
 <p align="center">
   <a href="https://github.com/JacoboJin/Grow-RV32/">
-    <img src="ReadMe-deps/logo.png" alt="Logo" width="160" height="160">
+    <img src="ReadMe-deps/logo.png" alt="Logo" width="288" height="288">
   </a>
 
   <h3 align="center">Grow-RV32</h3>
@@ -36,8 +34,45 @@ This is an experiment for  lab's members, aiming to design an RV32 SoC. In the f
 
 </p>
 
+<!-- PROJECT BODY -->
+## Contents
 
+- [Grow-RV32](#grow-rv32)
+  - [Contents](#contents)
+    - [File Directory](#file-directory)
+    - [Version Control](#version-control)
+    - [Author](#author)
+    - [License](#license)
 
+### File Directory
+
+```text
+File Tree
+├── /ReadMe-deps/
+├── LICENSE
+└── README.md
+```
+
+### Version Control
+
+This project uses Git for version control. You can check the available versions in the repository.
+
+### Author
+
+_**@ Microelectronics R&D Center in Shanghai University**_
+
+<!--
+<p align="center">
+  <a href="https://github.com/JacoboJin/Grow-RV32/">
+    <img src="ReadMe-deps/mchip_logo.jpg" alt="Logo" width="220" height="150" ="center">
+  </a>
+</p>
+-->
+ *You can also check the list of contributors to see all the developers involved in this repo.*
+
+### License
+
+This project is licensed under the **MIT License**. For details, please refer to the [LICENSE](https://github.com/JacoboJin/Grow-RV32/blob/main/LICENSE) file.
 
 <!-- links -->
 [your-project-path]: JacoboJin/Grow-RV32
@@ -51,4 +86,3 @@ This is an experiment for  lab's members, aiming to design an RV32 SoC. In the f
 [issues-url]: https://img.shields.io/github/issues/JacoboJin/Grow-RV32.svg
 [license-shield]: https://img.shields.io/github/license/JacoboJin/Grow-RV32.svg?style=flat-square
 [license-url]: https://github.com/JacoboJin/Grow-RV32/blob/main/LICENSE
-  
