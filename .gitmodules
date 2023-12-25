@@ -1,0 +1,3 @@
+[submodule "reference/openc910"]
+	path = reference/openc910
+	url = https://github.com/T-head-Semi/openc910
