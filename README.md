@@ -1,4 +1,4 @@
-# Grow-RV32
+# PANXI-RV32
 
 This is an experiment for  lab's members, aiming to design an RV32 SoC. In the future, we will continuously add the desired functions to it.
 
@@ -14,22 +14,22 @@ This is an experiment for  lab's members, aiming to design an RV32 SoC. In the f
 <br />
 
 <p align="center">
-  <a href="https://github.com/JacoboJin/Grow-RV32/">
+  <a href="https://github.com/JacoboJin/PANXI-RV32Core/">
     <img src="ReadMe-deps/logo.png" alt="Logo" width="288" height="288">
   </a>
 
-  <h3 align="center">Grow-RV32</h3>
+  <h3 align="center">PANXI-RV32</h3>
   <p align="center">
     A "perfect" readme document for you to start the project!
     <br />
-    <a href="https://github.com/JacoboJin/Grow-RV32"><strong>Explore the documentation of this project. »</strong></a>
+    <a href="https://github.com/JacoboJin/PANXI-RV32Core"><strong>Explore the documentation of this project. »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/JacoboJin/Grow-RV32">View Demo</a>
+    <a href="https://github.com/JacoboJin/PANXI-RV32Core">View Demo</a>
     ·
-    <a href="https://github.com/JacoboJin/Grow-RV32/issues">Report Bug</a>
+    <a href="https://github.com/JacoboJin/PANXI-RV32Core/issues">Report Bug</a>
     ·
-    <a href="https://github.com/JacoboJin/Grow-RV32/issues">Issue</a>
+    <a href="https://github.com/JacoboJin/PANXI-RV32Core/issues">Issue</a>
   </p>
 
 </p>
@@ -37,7 +37,7 @@ This is an experiment for  lab's members, aiming to design an RV32 SoC. In the f
 <!-- PROJECT BODY -->
 ## Contents
 
-- [Grow-RV32](#grow-rv32)
+- [PANXI-RV32](#panxi-rv32)
   - [Contents](#contents)
     - [File Directory](#file-directory)
     - [Version Control](#version-control)
@@ -63,7 +63,7 @@ _**@ Microelectronics R&D Center in Shanghai University**_
 
 <!--
 <p align="center">
-  <a href="https://github.com/JacoboJin/Grow-RV32/">
+  <a href="https://github.com/JacoboJin/PANXI-RV32Core/">
     <img src="ReadMe-deps/mchip_logo.jpg" alt="Logo" width="220" height="150" ="center">
   </a>
 </p>
@@ -72,17 +72,17 @@ _**@ Microelectronics R&D Center in Shanghai University**_
 
 ### License
 
-This project is licensed under the **MIT License**. For details, please refer to the [LICENSE](https://github.com/JacoboJin/Grow-RV32/blob/main/LICENSE) file.
+This project is licensed under the **MIT License**. For details, please refer to the [LICENSE](https://github.com/JacoboJin/PANXI-RV32Core/blob/main/LICENSE) file.
 
 <!-- links -->
-[your-project-path]: JacoboJin/Grow-RV32
-[contributors-shield]: https://img.shields.io/github/contributors/JacoboJin/Grow-RV32.svg?style=flat-square
-[contributors-url]: https://github.com/JacoboJin/Grow-RV32/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/JacoboJin/Grow-RV32.svg?style=flat-square
-[forks-url]: https://github.com/JacoboJin/Grow-RV32/network/members
-[stars-shield]: https://img.shields.io/github/stars/JacoboJin/Grow-RV32.svg?style=flat-square
-[stars-url]: https://github.com/JacoboJin/Grow-RV32/stargazers
-[issues-shield]: https://img.shields.io/github/issues/JacoboJin/Grow-RV32.svg?style=flat-square
-[issues-url]: https://img.shields.io/github/issues/JacoboJin/Grow-RV32.svg
-[license-shield]: https://img.shields.io/github/license/JacoboJin/Grow-RV32.svg?style=flat-square
-[license-url]: https://github.com/JacoboJin/Grow-RV32/blob/main/LICENSE
+[your-project-path]: JacoboJin/PANXI-RV32Core
+[contributors-shield]: https://img.shields.io/github/contributors/JacoboJin/PANXI-RV32Core.svg?style=flat-square
+[contributors-url]: https://github.com/JacoboJin/PANXI-RV32Core/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/JacoboJin/PANXI-RV32Core.svg?style=flat-square
+[forks-url]: https://github.com/JacoboJin/PANXI-RV32Core/network/members
+[stars-shield]: https://img.shields.io/github/stars/JacoboJin/PANXI-RV32Core.svg?style=flat-square
+[stars-url]: https://github.com/JacoboJin/PANXI-RV32Core/stargazers
+[issues-shield]: https://img.shields.io/github/issues/JacoboJin/PANXI-RV32Core.svg?style=flat-square
+[issues-url]: https://img.shields.io/github/issues/JacoboJin/PANXI-RV32Core.svg
+[license-shield]: https://img.shields.io/github/license/JacoboJin/PANXI-RV32Core.svg?style=flat-square
+[license-url]: https://github.com/JacoboJin/PANXI-RV32Core/blob/main/LICENSE
