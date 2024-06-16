@@ -12,6 +12,8 @@ localparam COUNT = $clog2(NUM);
 
 wire [NUM - 1:0] p [COUNT * 2 - 1:0];
 wire [NUM - 1:0] g [COUNT * 2 - 1:0];
+wire [NUM - 1:0] c;
+
 assign p[0] = a ^ b;
 assign g[0] = a & b;
 
@@ -38,10 +40,9 @@ generate
 endgenerate
 
 
-wire [NUM - 1:0] c;
 assign c = g[COUNT * 2 - 1] | p[COUNT * 2 - 1] & {NUM{ci}};
-assign s = a ^ b ^ {c[NUM - 2:0], ci};
 
+assign s = a ^ b ^ {c[NUM - 2:0], ci};
 assign co = c[NUM-1];
 
 endmodule
