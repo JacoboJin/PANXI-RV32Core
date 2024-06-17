@@ -10,29 +10,34 @@ module panxi_pc(
     input  wire  [`HOLD_WIDTH-1:0]          hold_flag_xi,
     
     //from jtag
-    input  wire                            rst_jtag_xi ,
+    input  wire                             rst_jtag_xi ,
 
     // to if
-    output reg  [`PANXI_DW-1:0]             pc_xo
+    output wire  [`PANXI_DW-1:0]            inst_addr_xo
 );
+
+    reg [`PANXI_DW-1:0] pc_ptr;
+
     // sync design
     always @(posedge clk) begin
         // reset pc ptr
         if(rst == 1'b1 || rst_jtag_xi == 1'b1) begin
-            pc_xo <= 32'h0;
+            pc_ptr <= 32'h0;
         end
         // jump
         else if(jmp_en_xi == 1'b1) begin
-            pc_xo <= jmp_addr_xi;
+            pc_ptr <= jmp_addr_xi;
         end
         // hold
         else if(hold_flag_xi == `HOLD_PC) begin
-            pc_xo <= pc_xo;
+            pc_ptr <= pc_ptr;
         end
         // pc+4
         else begin
-            pc_xo <= pc_xo + 32'd4;
+            pc_ptr <= pc_ptr + 32'd4;
         end
     end
+
+    assign inst_addr_xo = pc_ptr;
 
 endmodule
