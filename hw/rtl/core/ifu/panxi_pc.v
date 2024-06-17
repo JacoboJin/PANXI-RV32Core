@@ -1,3 +1,4 @@
+`timescale 1ps/1ps
 `include "../defines.v"
 
 module panxi_pc(
