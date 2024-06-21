@@ -1,4 +1,4 @@
-module panxi_spsram_1024x32#(
+module panxi_spsram#(
 	parameter DATA_WIDTH = 32,
 	parameter ADDR_WIDTH = 10
 )(
