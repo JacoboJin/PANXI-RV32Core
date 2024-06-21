@@ -21,6 +21,6 @@ module panxi_spsram_1024x32(
 	    .AWEN	    (AWEN       ),	// 
 	
 	    .ADATA_XO   (ADATA_XO   )
-    )
+    );
 
 endmodule
