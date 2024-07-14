@@ -12,7 +12,7 @@ module cla_adder #(
 
 generate
 	if (ST == "hybird") begin
-		cla_Hybird #(
+		cla_hybird #(
 			.NUM(NUM)
 		) CLA (
 			.a(a),

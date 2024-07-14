@@ -12,7 +12,6 @@ module booth_mul#(
 	output [NUM*2-1:0] out
     );
 
-// TODO  BASE = 4 is not verite
 
 localparam BOOTH_IN = $clog2(BASE);	
 localparam BOOTH_NUM = NUM / BOOTH_IN + 1;
@@ -82,7 +81,7 @@ generate								//generate first booth
 		end
 	end
 	else begin
-		assign booth_sign[0] = ~sign & mid_b[BOOTH_IN-1] + mid_b[BOOTH_IN-1] & ~a[NUM-1] + sign & ~mid_b[BOOTH_IN-1] & a[NUM-1];
+		assign booth_sign[0] = ~sign & mid_b[BOOTH_IN-1] | mid_b[BOOTH_IN-1] & ~a[NUM-1] | sign & ~mid_b[BOOTH_IN-1] & a[NUM-1];
 		always @(*) begin
 			case ({mid_b[0 +: BOOTH_IN], 1'b0})
 				3'h0: begin
@@ -167,7 +166,7 @@ generate								//booth encode
 			end
 		end
 		else begin
-			assign booth_sign[i] = ~sign & mid_b[BOOTH_IN*(i+1)-1] + mid_b[BOOTH_IN*(i+1)-1] & ~a[NUM-1] + sign & ~mid_b[BOOTH_IN*(i+1)-1] & a[NUM-1];
+			assign booth_sign[i] = ~sign & mid_b[BOOTH_IN*(i+1)-1] | mid_b[BOOTH_IN*(i+1)-1] & ~a[NUM-1] | sign & ~mid_b[BOOTH_IN*(i+1)-1] & a[NUM-1];
 			always @(*) begin
 				case (mid_b[BOOTH_IN*i-1 +: (BOOTH_IN+1)])
 					3'h0: begin
@@ -790,9 +789,262 @@ generate                                //adder tree
 			);
 			assign fin_data = full_data;
 		end : tree_adder_13
+		32'd14: begin : tree_adder_14 // veritied
+			wire [BOOTH_LEN+BOOTH_IN:0] cp4_1_1_sum, cp4_1_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_2_sum, cp4_1_2_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_3_sum, cp4_1_3_carry;
+			wire [BOOTH_LEN+BOOTH_IN*5+1:0] cp4_2_1_sum, cp4_2_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*5:0] cp4_2_2_sum, cp4_2_2_carry;
+			wire [BOOTH_LEN+BOOTH_IN*11+1:0] cp4_3_1_sum, cp4_3_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*11+2:0] full_data;
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN)
+			)cp4_1_1(
+				.a({{BOOTH_IN*2{1'b0}}, booth_res[13]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[0]}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[1]}),
+				.d({booth_res[2], {BOOTH_IN{1'b0}}}),
+				.sum(cp4_1_1_sum),
+				.carry(cp4_1_1_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_2(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[3]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[4], {BOOTH_IN{1'b0}}}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[5], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[6], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_2_sum),
+				.carry(cp4_1_2_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_3(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[7]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[8], {BOOTH_IN*1{1'b0}}}),
+				.c({{BOOTH_IN*1{1'b0}}, booth_res[9], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[10], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_3_sum),
+				.carry(cp4_1_3_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*5+1)
+			)cp4_2_1(
+				.a({{BOOTH_IN*4{1'b0}}, cp4_1_1_sum}),
+				.b({{BOOTH_IN*4{1'b0}}, cp4_1_1_carry}),
+				.c({cp4_1_2_sum, {BOOTH_IN*2{1'b0}}}),
+				.d({cp4_1_2_carry, {BOOTH_IN*2{1'b0}}}),
+				.sum(cp4_2_1_sum),
+				.carry(cp4_2_1_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*5)
+			)cp4_2_2(
+				.a({{BOOTH_IN*2-1{1'b0}}, cp4_1_3_sum}),
+				.b({{BOOTH_IN*2-1{1'b0}}, cp4_1_3_carry}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[11], {BOOTH_IN*4{1'b0}}}),
+				.d({booth_res[12], {BOOTH_IN*5{1'b0}}}),
+				.sum(cp4_2_2_sum),
+				.carry(cp4_2_2_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*11+1)
+			)cp4_3_1(
+				.a({{BOOTH_IN*6{1'b0}}, cp4_2_1_sum}),
+				.b({{BOOTH_IN*6{1'b0}}, cp4_2_1_carry}),
+				.c({cp4_2_2_sum, {BOOTH_IN*6{1'b0}}}),
+				.d({cp4_2_2_carry, {BOOTH_IN*6{1'b0}}}),
+				.sum(cp4_3_1_sum),
+				.carry(cp4_3_1_carry)
+			);
+			cla_adder #(
+				.NUM(BOOTH_LEN+BOOTH_IN*11+3),
+				.ST("hybird")
+			)adder_fin(
+				.a({1'b0, cp4_3_1_sum}),
+				.b({1'b0, cp4_3_1_carry}),
+				.s(full_data)
+			);
+			assign fin_data = full_data;
+		end : tree_adder_14
+		32'd15: begin : tree_adder_15 // veritied
+			wire [BOOTH_LEN+BOOTH_IN:0] cp4_1_1_sum, cp4_1_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_2_sum, cp4_1_2_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_3_sum, cp4_1_3_carry;
+			wire [BOOTH_LEN+BOOTH_IN*2-1:0] cp3_1_4_sum, cp3_1_4_carry;
+			wire [BOOTH_LEN+BOOTH_IN*5+1:0] cp4_2_1_sum, cp4_2_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*6+1:0] cp4_2_2_sum, cp4_2_2_carry;
+			wire [BOOTH_LEN+BOOTH_IN*12+2:0] cp4_3_1_sum, cp4_3_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*12+3:0] full_data;
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN)
+			)cp4_1_1(
+				.a({{BOOTH_IN*2{1'b0}}, booth_res[14]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[0]}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[1]}),
+				.d({booth_res[2], {BOOTH_IN{1'b0}}}),
+				.sum(cp4_1_1_sum),
+				.carry(cp4_1_1_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_2(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[3]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[4], {BOOTH_IN{1'b0}}}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[5], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[6], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_2_sum),
+				.carry(cp4_1_2_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_3(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[7]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[8], {BOOTH_IN*1{1'b0}}}),
+				.c({{BOOTH_IN*1{1'b0}}, booth_res[9], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[10], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_3_sum),
+				.carry(cp4_1_3_carry)
+			);
+			comp_3to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*2)
+			)cp3_1_4(
+				.a({{BOOTH_IN*2{1'b0}}, booth_res[11]}),
+				.b({{BOOTH_IN{1'b0}}, booth_res[12], {BOOTH_IN{1'b0}}}),
+				.c({booth_res[13], {BOOTH_IN*2{1'b0}}}),
+				.sum(cp3_1_4_sum),
+				.carry(cp3_1_4_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*5+1)
+			)cp4_2_1(
+				.a({{BOOTH_IN*4{1'b0}}, cp4_1_1_sum}),
+				.b({{BOOTH_IN*4{1'b0}}, cp4_1_1_carry}),
+				.c({cp4_1_2_sum, {BOOTH_IN*2{1'b0}}}),
+				.d({cp4_1_2_carry, {BOOTH_IN*2{1'b0}}}),
+				.sum(cp4_2_1_sum),
+				.carry(cp4_2_1_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*6+1)
+			)cp4_2_2(
+				.a({{BOOTH_IN*3{1'b0}}, cp4_1_3_sum}),
+				.b({{BOOTH_IN*3{1'b0}}, cp4_1_3_carry}),
+				.c({1'b0, cp3_1_4_sum, {BOOTH_IN*4{1'b0}}}),
+				.d({cp3_1_4_carry, {BOOTH_IN*4+1{1'b0}}}),
+				.sum(cp4_2_2_sum),
+				.carry(cp4_2_2_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*12+2)
+			)cp4_3_1(
+				.a({{BOOTH_IN*6{1'b0}}, cp4_2_1_sum}),
+				.b({{BOOTH_IN*6{1'b0}}, cp4_2_1_carry}),
+				.c({cp4_2_2_sum, {BOOTH_IN*6{1'b0}}}),
+				.d({cp4_2_2_carry, {BOOTH_IN*6{1'b0}}}),
+				.sum(cp4_3_1_sum),
+				.carry(cp4_3_1_carry)
+			);
+			cla_adder #(
+				.NUM(BOOTH_LEN+BOOTH_IN*12+4),
+				.ST("hybird")
+			)adder_fin(
+				.a({1'b0, cp4_3_1_sum}),
+				.b({1'b0, cp4_3_1_carry}),
+				.s(full_data)
+			);
+			assign fin_data = full_data;
+		end : tree_adder_15
+		32'd16: begin : tree_adder_16
+			wire [BOOTH_LEN+BOOTH_IN:0] cp4_1_1_sum, cp4_1_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_2_sum, cp4_1_2_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_3_sum, cp4_1_3_carry;
+			wire [BOOTH_LEN+BOOTH_IN*3:0] cp4_1_4_sum, cp4_1_4_carry;
+			wire [BOOTH_LEN+BOOTH_IN*5+1:0] cp4_2_1_sum, cp4_2_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*7+1:0] cp4_2_2_sum, cp4_2_2_carry;
+			wire [BOOTH_LEN+BOOTH_IN*13+2:0] cp4_3_1_sum, cp4_3_1_carry;
+			wire [BOOTH_LEN+BOOTH_IN*13+3:0] full_data;
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN)
+			)cp4_1_1(
+				.a({{BOOTH_IN*2{1'b0}}, booth_res[15]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[0]}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[1]}),
+				.d({booth_res[2], {BOOTH_IN{1'b0}}}),
+				.sum(cp4_1_1_sum),
+				.carry(cp4_1_1_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_2(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[3]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[4], {BOOTH_IN{1'b0}}}),
+				.c({{BOOTH_IN{1'b0}}, booth_res[5], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[6], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_2_sum),
+				.carry(cp4_1_2_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_3(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[7]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[8], {BOOTH_IN*1{1'b0}}}),
+				.c({{BOOTH_IN*1{1'b0}}, booth_res[9], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[10], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_3_sum),
+				.carry(cp4_1_3_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*3)
+			)cp4_1_4(
+				.a({{BOOTH_IN*3{1'b0}}, booth_res[11]}),
+				.b({{BOOTH_IN*2{1'b0}}, booth_res[12], {BOOTH_IN*1{1'b0}}}),
+				.c({{BOOTH_IN*1{1'b0}}, booth_res[13], {BOOTH_IN*2{1'b0}}}),
+				.d({booth_res[14], {BOOTH_IN*3{1'b0}}}),
+				.sum(cp4_1_4_sum),
+				.carry(cp4_1_4_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*5+1)
+			)cp4_2_1(
+				.a({{BOOTH_IN*4{1'b0}}, cp4_1_1_sum}),
+				.b({{BOOTH_IN*4{1'b0}}, cp4_1_1_carry}),
+				.c({cp4_1_2_sum, {BOOTH_IN*2{1'b0}}}),
+				.d({cp4_1_2_carry, {BOOTH_IN*2{1'b0}}}),
+				.sum(cp4_2_1_sum),
+				.carry(cp4_2_1_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*7+1)
+			)cp4_2_2(
+				.a({{BOOTH_IN*4{1'b0}}, cp4_1_3_sum}),
+				.b({{BOOTH_IN*4{1'b0}}, cp4_1_3_carry}),
+				.c({cp4_1_4_sum, {BOOTH_IN*4{1'b0}}}),
+				.d({cp4_1_4_carry, {BOOTH_IN*4{1'b0}}}),
+				.sum(cp4_2_2_sum),
+				.carry(cp4_2_2_carry)
+			);
+			comp_4to2 #(
+				.NUM(BOOTH_LEN+BOOTH_IN*13+2)
+			)cp4_3_1(
+				.a({{BOOTH_IN*7{1'b0}}, cp4_2_1_sum}),
+				.b({{BOOTH_IN*7{1'b0}}, cp4_2_1_carry}),
+				.c({cp4_2_2_sum, {BOOTH_IN*6{1'b0}}}),
+				.d({cp4_2_2_carry, {BOOTH_IN*6{1'b0}}}),
+				.sum(cp4_3_1_sum),
+				.carry(cp4_3_1_carry)
+			);
+			cla_adder #(
+				.NUM(BOOTH_LEN+BOOTH_IN*13+4),
+				.ST("hybird")
+			)adder_fin(
+				.a({1'b0, cp4_3_1_sum}),
+				.b({1'b0, cp4_3_1_carry}),
+				.s(full_data)
+			);
+			assign fin_data = full_data;
+		end : tree_adder_16		
 	endcase
 endgenerate                             //adder tree
-
-
 
 endmodule

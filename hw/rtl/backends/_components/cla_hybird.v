@@ -1,4 +1,4 @@
-module cla_hybrid #(
+module cla_hybird #(
     parameter NUM = 16
 )(
     input  [NUM - 1:0] a,
