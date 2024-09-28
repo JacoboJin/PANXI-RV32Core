@@ -39,10 +39,16 @@ This is an experiment for  lab's members, aiming to design an RV32 SoC. In the f
 
 - [PANXI-RV32](#panxi-rv32)
   - [Contents](#contents)
+      - [PANXI SoC Arch](#panxi-soc-arch)
     - [File Directory](#file-directory)
     - [Version Control](#version-control)
     - [Author](#author)
     - [License](#license)
+
+#### PANXI SoC Arch
+  <a href="https://github.com/JacoboJin/PANXI-RV32Core/">
+    <img src="doc/PANXI_SoC_ARCH_v100.png" alt="picture" width="288" height="288">
+  </a>
 
 ### File Directory
 
